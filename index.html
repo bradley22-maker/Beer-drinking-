@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Lads' Pint Tracker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="guinness-pour" id="pour-animation"></div>
+
+  <header>
+    <div class="harp-icon">𝄞</div>
+    <h1>THE LADS' PINT TRACKER</h1>
+    <p class="tagline">Guinness is Good For You. Keeping Score Is Better.</p>
+    <div class="harp-icon">𝄞</div>
+  </header>
+
+  <div class="session-controls">
+    <div class="session-info">
+      <span id="session-time">Session Time: 00:00:00</span>
+      <span id="total-beers-counter">Total Pints Destroyed: 0</span>
+    </div>
+    <button class="btn-reset" onclick="resetSession()">☠ NEW SESSION ☠</button>
+  </div>
+
+  <main class="drinkers-grid">
+
+    <!-- DAVE -->
+    <div class="drinker-card" id="card-dave">
+      <div class="drinker-avatar">🧥</div>
+      <h2 class="drinker-name">Dave</h2>
+      <div class="drinker-nickname">"Coat Rack"</div>
+      <div class="pint-display">
+        <div class="pint-glass-container">
+          <div class="pint-glass">
+            <div class="foam"></div>
+            <div class="beer-fill" id="fill-dave"></div>
+          </div>
+          <div class="pint-count" id="count-dave">0</div>
+          <div class="pint-label">PINTS</div>
+        </div>
+      </div>
+
+      <div class="drunkenness-meter">
+        <div class="meter-label">DRUNKOMETER</div>
+        <div class="meter-bar">
+          <div class="meter-fill" id="meter-dave"></div>
+        </div>
+        <div class="drunk-status" id="status-dave">Stone Cold Sober 😒</div>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-value" id="spend-dave">$0</div>
+          <div class="stat-label">Spent on Happiness</div>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn-add" onclick="addBeer('dave')">
+          🍺 ANOTHER PINT
+        </button>
+        <button class="btn-remove" onclick="removeBeer('dave')">
+          😢 SPILLED ONE
+        </button>
+      </div>
+
+      <div class="award-badge" id="award-dave"></div>
+    </div>
+
+    <!-- SCOREBOARD CENTER -->
+    <div class="scoreboard">
+      <div class="guinness-logo">
+        <div class="logo-harp">𝄞</div>
+        <div class="logo-text">GUINNESS</div>
+        <div class="logo-sub">EST. 1759</div>
+      </div>
+      <div class="vs-display">VS</div>
+      <div class="scoreboard-stats">
+        <div class="score-row">
+          <span id="sb-dave-count">0</span>
+          <span class="score-label">PINTS</span>
+          <span id="sb-mullen-count">0</span>
+        </div>
+        <div class="score-row">
+          <span id="sb-dave-spend">$0</span>
+          <span class="score-label">CASH</span>
+          <span id="sb-mullen-spend">$0</span>
+        </div>
+      </div>
+
+      <div class="gp-award-section" id="gp-section">
+        <div class="gp-trophy">🏆</div>
+        <div class="gp-title">GP AWARD</div>
+        <div class="gp-subtitle">Giant Pussy</div>
+        <div class="gp-winner" id="gp-winner">Start drinking to find out...</div>
+      </div>
+
+      <div class="fun-fact" id="fun-fact">
+        "A pint of Guinness has fewer calories than a pint of orange juice. You're basically on a diet."
+      </div>
+    </div>
+
+    <!-- MULLEN -->
+    <div class="drinker-card" id="card-mullen">
+      <div class="drinker-avatar">🤌</div>
+      <h2 class="drinker-name">Mullen</h2>
+      <div class="drinker-nickname">"The Lad"</div>
+      <div class="pint-display">
+        <div class="pint-glass-container">
+          <div class="pint-glass">
+            <div class="foam"></div>
+            <div class="beer-fill" id="fill-mullen"></div>
+          </div>
+          <div class="pint-count" id="count-mullen">0</div>
+          <div class="pint-label">PINTS</div>
+        </div>
+      </div>
+
+      <div class="drunkenness-meter">
+        <div class="meter-label">DRUNKOMETER</div>
+        <div class="meter-bar">
+          <div class="meter-fill" id="meter-mullen"></div>
+        </div>
+        <div class="drunk-status" id="status-mullen">Stone Cold Sober 😒</div>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-value" id="spend-mullen">$0</div>
+          <div class="stat-label">Spent on Happiness</div>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn-add" onclick="addBeer('mullen')">
+          🍺 ANOTHER PINT
+        </button>
+        <button class="btn-remove" onclick="removeBeer('mullen')">
+          😢 SPILLED ONE
+        </button>
+      </div>
+
+      <div class="award-badge" id="award-mullen"></div>
+    </div>
+
+  </main>
+
+  <div class="announcement-bar" id="announcement"></div>
+
+  <footer>
+    <p>Guinness &amp; Mates © 1759 | Drink Responsibly (But Not Too Responsibly — We're Watching)</p>
+    <p class="footer-disclaimer">Any resemblance to actual drinking sessions is entirely intentional.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
