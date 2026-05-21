@@ -3,991 +3,1245 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Lads' Pint Tracker</title>
-  <style>@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Roboto:wght@300;400;700&display=swap');
-
-:root {
-  --guinness-black: #0a0a0a;
-  --guinness-dark: #1a1008;
-  --guinness-cream: #f5e6c8;
-  --guinness-gold: #c8922a;
-  --guinness-amber: #e8a830;
-  --guinness-foam: #f0e6c8;
-  --guinness-red: #8b1a1a;
-  --text-light: #f0e6c8;
-  --text-muted: #a0906a;
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  background-color: var(--guinness-black);
-  color: var(--text-light);
-  font-family: 'Roboto', sans-serif;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-/* GUINNESS POUR ANIMATION TOP */
-.guinness-pour {
-  height: 4px;
-  background: linear-gradient(90deg, var(--guinness-black), var(--guinness-amber), var(--guinness-gold), var(--guinness-amber), var(--guinness-black));
-  background-size: 200% 100%;
-  animation: pour 3s linear infinite;
-}
-
-@keyframes pour {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
-
-/* HEADER */
-header {
-  text-align: center;
-  padding: 30px 20px 20px;
-  background: linear-gradient(180deg, #1a1008 0%, #0a0a0a 100%);
-  border-bottom: 2px solid var(--guinness-gold);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-}
-
-header h1 {
-  font-family: 'Oswald', sans-serif;
-  font-size: clamp(1.5rem, 4vw, 2.8rem);
-  font-weight: 700;
-  letter-spacing: 4px;
-  color: var(--guinness-cream);
-  text-shadow: 0 0 20px var(--guinness-gold);
-}
-
-.tagline {
-  font-size: 0.85rem;
-  color: var(--guinness-gold);
-  letter-spacing: 2px;
-  margin-top: 6px;
-  font-style: italic;
-}
-
-.harp-icon {
-  font-size: 2.5rem;
-  color: var(--guinness-gold);
-  text-shadow: 0 0 10px var(--guinness-amber);
-}
-
-/* SESSION CONTROLS */
-.session-controls {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 30px;
-  background: #111;
-  border-bottom: 1px solid #333;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.session-info {
-  display: flex;
-  gap: 30px;
-  font-size: 0.85rem;
-  color: var(--text-muted);
-}
-
-.session-info span {
-  font-family: 'Oswald', sans-serif;
-  letter-spacing: 1px;
-}
-
-.btn-reset {
-  background: var(--guinness-red);
-  color: var(--guinness-cream);
-  border: none;
-  padding: 8px 20px;
-  font-family: 'Oswald', sans-serif;
-  font-size: 0.9rem;
-  letter-spacing: 2px;
-  cursor: pointer;
-  border-radius: 3px;
-  transition: all 0.2s;
-}
-
-.btn-reset:hover {
-  background: #a52020;
-  transform: scale(1.05);
-}
-
-/* MAIN GRID */
-.drinkers-grid {
-  display: grid;
-  grid-template-columns: 1fr 260px 1fr;
-  gap: 20px;
-  padding: 30px 20px;
-  max-width: 1100px;
-  margin: 0 auto;
-}
-
-@media (max-width: 800px) {
-  .drinkers-grid {
-    grid-template-columns: 1fr;
-  }
-  .scoreboard { order: -1; }
-}
-
-/* DRINKER CARDS */
-.drinker-card {
-  background: linear-gradient(160deg, #1c1408 0%, #111 100%);
-  border: 1px solid #333;
-  border-radius: 8px;
-  padding: 25px 20px;
-  text-align: center;
-  position: relative;
-  transition: border-color 0.3s;
-}
-
-.drinker-card:hover {
-  border-color: var(--guinness-gold);
-}
-
-.drinker-card.winning {
-  border-color: var(--guinness-amber);
-  box-shadow: 0 0 20px rgba(200, 146, 42, 0.3);
-}
-
-.drinker-card.losing {
-  border-color: var(--guinness-red);
-  box-shadow: 0 0 20px rgba(139, 26, 26, 0.3);
-}
-
-.drinker-avatar {
-  font-size: 3rem;
-  margin-bottom: 8px;
-}
-
-.drinker-name {
-  font-family: 'Oswald', sans-serif;
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--guinness-cream);
-  letter-spacing: 3px;
-}
-
-.drinker-nickname {
-  font-size: 0.85rem;
-  color: var(--guinness-gold);
-  font-style: italic;
-  margin-bottom: 20px;
-  letter-spacing: 1px;
-}
-
-/* PINT GLASS */
-.pint-glass-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 20px auto;
-}
-
-.pint-glass {
-  width: 60px;
-  height: 100px;
-  background: rgba(255,255,255,0.05);
-  border: 2px solid rgba(255,255,255,0.2);
-  border-radius: 4px 4px 6px 6px;
-  position: relative;
-  overflow: hidden;
-  clip-path: polygon(8% 0%, 92% 0%, 100% 100%, 0% 100%);
-}
-
-.foam {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 16px;
-  background: var(--guinness-foam);
-  border-radius: 50% 50% 0 0 / 8px 8px 0 0;
-  z-index: 2;
-  opacity: 0;
-  transition: opacity 0.5s;
-}
-
-.beer-fill {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 0%;
-  background: linear-gradient(180deg, #3a2a10 0%, #1a0e04 100%);
-  transition: height 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.pint-count {
-  font-family: 'Oswald', sans-serif;
-  font-size: 3rem;
-  font-weight: 700;
-  color: var(--guinness-amber);
-  line-height: 1;
-  margin-top: 10px;
-}
-
-.pint-label {
-  font-size: 0.7rem;
-  color: var(--text-muted);
-  letter-spacing: 3px;
-  margin-top: 2px;
-}
-
-/* DRUNKOMETER */
-.drunkenness-meter {
-  margin: 20px 0;
-}
-
-.meter-label {
-  font-family: 'Oswald', sans-serif;
-  font-size: 0.7rem;
-  letter-spacing: 3px;
-  color: var(--text-muted);
-  margin-bottom: 6px;
-}
-
-.meter-bar {
-  height: 12px;
-  background: #1a1a1a;
-  border-radius: 6px;
-  border: 1px solid #333;
-  overflow: hidden;
-  margin-bottom: 6px;
-}
-
-.meter-fill {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, #2d6a1f, #8ab825, #e8a830, #c8461a, #8b1a1a);
-  border-radius: 6px;
-  transition: width 0.6s ease;
-}
-
-.drunk-status {
-  font-size: 0.8rem;
-  color: var(--guinness-cream);
-  font-style: italic;
-  min-height: 18px;
-}
-
-/* STATS */
-.stats {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin: 15px 0;
-}
-
-.stat {
-  text-align: center;
-}
-
-.stat-value {
-  font-family: 'Oswald', sans-serif;
-  font-size: 1.6rem;
-  color: var(--guinness-amber);
-  font-weight: 600;
-}
-
-.stat-label {
-  font-size: 0.65rem;
-  color: var(--text-muted);
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-
-/* BUTTONS */
-.btn-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 15px;
-}
-
-.btn-add {
-  background: linear-gradient(135deg, #1a3a0a, #2d6a1f);
-  color: var(--guinness-cream);
-  border: 1px solid #2d6a1f;
-  padding: 14px 20px;
-  font-family: 'Oswald', sans-serif;
-  font-size: 1rem;
-  letter-spacing: 2px;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: all 0.2s;
-  width: 100%;
-}
-
-.btn-add:hover {
-  background: linear-gradient(135deg, #2d6a1f, #3a8a28);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(45, 106, 31, 0.4);
-}
-
-.btn-add:active {
-  transform: translateY(0);
-}
-
-.btn-remove {
-  background: transparent;
-  color: var(--text-muted);
-  border: 1px solid #333;
-  padding: 8px 20px;
-  font-family: 'Roboto', sans-serif;
-  font-size: 0.75rem;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: all 0.2s;
-  width: 100%;
-}
-
-.btn-remove:hover {
-  border-color: var(--guinness-red);
-  color: #e88;
-}
-
-/* AWARD BADGE */
-.award-badge {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 0.7rem;
-  padding: 4px 8px;
-  border-radius: 3px;
-  font-family: 'Oswald', sans-serif;
-  letter-spacing: 1px;
-  font-weight: 600;
-}
-
-.award-badge.gp {
-  background: var(--guinness-red);
-  color: var(--guinness-cream);
-  animation: pulse-red 1.5s ease-in-out infinite;
-}
-
-.award-badge.champ {
-  background: var(--guinness-gold);
-  color: var(--guinness-black);
-}
-
-@keyframes pulse-red {
-  0%, 100% { box-shadow: 0 0 4px var(--guinness-red); }
-  50% { box-shadow: 0 0 12px var(--guinness-red), 0 0 20px rgba(139,26,26,0.5); }
-}
-
-/* SCOREBOARD */
-.scoreboard {
-  background: linear-gradient(180deg, #1a1008, #0d0d0d);
-  border: 1px solid var(--guinness-gold);
-  border-radius: 8px;
-  padding: 20px 15px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
-}
-
-.guinness-logo {
-  text-align: center;
-  padding: 10px;
-  border-bottom: 1px solid #333;
-  width: 100%;
-}
-
-.logo-harp {
-  font-size: 2.5rem;
-  color: var(--guinness-gold);
-  text-shadow: 0 0 15px var(--guinness-amber);
-}
-
-.logo-text {
-  font-family: 'Oswald', sans-serif;
-  font-size: 1.6rem;
-  letter-spacing: 6px;
-  color: var(--guinness-cream);
-  font-weight: 700;
-}
-
-.logo-sub {
-  font-size: 0.65rem;
-  letter-spacing: 4px;
-  color: var(--guinness-gold);
-  margin-top: 2px;
-}
-
-.vs-display {
-  font-family: 'Oswald', sans-serif;
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: var(--guinness-gold);
-  letter-spacing: 4px;
-}
-
-.scoreboard-stats {
-  width: 100%;
-}
-
-.score-row {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 10px;
-}
-
-.score-row span:first-child {
-  font-family: 'Oswald', sans-serif;
-  font-size: 1.4rem;
-  color: var(--guinness-amber);
-  text-align: right;
-}
-
-.score-row span:last-child {
-  font-family: 'Oswald', sans-serif;
-  font-size: 1.4rem;
-  color: var(--guinness-amber);
-  text-align: left;
-}
-
-.score-label {
-  font-size: 0.6rem;
-  color: var(--text-muted);
-  letter-spacing: 2px;
-  text-align: center;
-}
-
-/* GP AWARD SECTION */
-.gp-award-section {
-  background: rgba(139, 26, 26, 0.1);
-  border: 1px solid rgba(139, 26, 26, 0.4);
-  border-radius: 6px;
-  padding: 12px;
-  width: 100%;
-  text-align: center;
-}
-
-.gp-trophy {
-  font-size: 2rem;
-}
-
-.gp-title {
-  font-family: 'Oswald', sans-serif;
-  font-size: 1.2rem;
-  color: var(--guinness-red);
-  letter-spacing: 3px;
-  font-weight: 700;
-}
-
-.gp-subtitle {
-  font-size: 0.65rem;
-  color: var(--text-muted);
-  letter-spacing: 2px;
-  margin-bottom: 8px;
-}
-
-.gp-winner {
-  font-size: 0.85rem;
-  color: var(--guinness-cream);
-  font-style: italic;
-  min-height: 20px;
-}
-
-/* FUN FACT */
-.fun-fact {
-  font-size: 0.72rem;
-  color: var(--text-muted);
-  font-style: italic;
-  text-align: center;
-  line-height: 1.5;
-  padding: 10px;
-  border-top: 1px solid #222;
-  width: 100%;
-}
-
-/* ANNOUNCEMENT BAR */
-.announcement-bar {
-  background: var(--guinness-amber);
-  color: var(--guinness-black);
-  text-align: center;
-  padding: 12px 20px;
-  font-family: 'Oswald', sans-serif;
-  font-size: 1rem;
-  letter-spacing: 2px;
-  font-weight: 700;
-  min-height: 46px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity 0.5s;
-}
-
-/* FOOTER */
-footer {
-  text-align: center;
-  padding: 20px;
-  background: #050505;
-  border-top: 1px solid #222;
-  color: var(--text-muted);
-  font-size: 0.75rem;
-  line-height: 2;
-}
-
-.footer-disclaimer {
-  font-style: italic;
-  font-size: 0.65rem;
-  color: #444;
-}
-
-/* CELEBRATION BURST */
-@keyframes burst {
-  0% { transform: scale(0.5); opacity: 1; }
-  100% { transform: scale(3); opacity: 0; }
-}
-
-.burst {
-  position: fixed;
-  pointer-events: none;
-  font-size: 2rem;
-  animation: burst 0.8s ease-out forwards;
-  z-index: 999;
-}
-</style>
+  <title>Summerhill Market — Store Evaluation</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;700&display=swap');
+
+    :root {
+      --green-dark:    #1e4620;
+      --green-mid:     #2d5a27;
+      --green-light:   #4a7c59;
+      --green-pale:    #d4e6d0;
+      --cream:         #faf6ed;
+      --cream-warm:    #f0e9d8;
+      --cream-border:  #ddd5be;
+      --gold:          #b8935a;
+      --gold-light:    #d4ad78;
+      --text-dark:     #1a1a1a;
+      --text-mid:      #4a4a4a;
+      --text-muted:    #7a7a7a;
+      --white:         #ffffff;
+      --score-1:       #c0392b;
+      --score-2:       #e67e22;
+      --score-3:       #f1c40f;
+      --score-4:       #27ae60;
+      --score-5:       #1e4620;
+      --shadow-sm:     0 2px 8px rgba(30,70,32,0.10);
+      --shadow-md:     0 4px 20px rgba(30,70,32,0.15);
+      --shadow-lg:     0 8px 40px rgba(30,70,32,0.18);
+      --radius:        10px;
+      --radius-lg:     16px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--cream);
+      color: var(--text-dark);
+      min-height: 100vh;
+    }
+
+    /* ─── TOP BAR ─────────────────────────────────────────────────── */
+    .topbar {
+      background: var(--green-dark);
+      color: var(--cream);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      height: 56px;
+      font-size: 13px;
+      letter-spacing: 0.05em;
+    }
+    .topbar-tagline { color: var(--gold-light); font-style: italic; font-weight: 300; }
+    .topbar-date { color: var(--green-pale); }
+
+    /* ─── HEADER ──────────────────────────────────────────────────── */
+    header {
+      background: linear-gradient(135deg, var(--green-dark) 0%, var(--green-mid) 60%, var(--green-light) 100%);
+      padding: 36px 32px 28px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+    }
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; left: -30px;
+      width: 240px; height: 240px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.03);
+    }
+    .header-leaf {
+      font-size: 28px;
+      margin-bottom: 6px;
+    }
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--cream);
+      letter-spacing: 0.02em;
+      line-height: 1.2;
+    }
+    header h1 span { color: var(--gold-light); }
+    header p.subtitle {
+      margin-top: 8px;
+      color: var(--green-pale);
+      font-size: 0.95rem;
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .header-divider {
+      width: 60px;
+      height: 2px;
+      background: var(--gold);
+      margin: 14px auto 0;
+      border-radius: 2px;
+    }
+
+    /* ─── PROGRESS BAR ────────────────────────────────────────────── */
+    .progress-wrap {
+      background: var(--green-dark);
+      padding: 12px 32px 16px;
+    }
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      color: var(--green-pale);
+      font-size: 12px;
+      margin-bottom: 6px;
+      letter-spacing: 0.06em;
+    }
+    .progress-track {
+      background: rgba(255,255,255,0.12);
+      border-radius: 4px;
+      height: 6px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      border-radius: 4px;
+      transition: width 0.4s ease;
+      width: 0%;
+    }
+
+    /* ─── LAYOUT ──────────────────────────────────────────────────── */
+    .app-layout {
+      display: flex;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 28px 20px 60px;
+      gap: 28px;
+    }
+
+    /* ─── SIDEBAR ─────────────────────────────────────────────────── */
+    .sidebar {
+      width: 220px;
+      flex-shrink: 0;
+    }
+    .sidebar-sticky {
+      position: sticky;
+      top: 20px;
+    }
+    .sidebar-title {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+      padding-left: 4px;
+    }
+    .nav-step {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 14px;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-bottom: 3px;
+      border: 1.5px solid transparent;
+    }
+    .nav-step:hover { background: var(--cream-warm); border-color: var(--cream-border); }
+    .nav-step.active {
+      background: var(--green-dark);
+      color: var(--cream);
+      border-color: var(--green-dark);
+    }
+    .nav-step.done { border-color: var(--green-light); }
+    .nav-dot {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      border: 2px solid var(--cream-border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      flex-shrink: 0;
+      background: var(--white);
+      color: var(--text-muted);
+      transition: all 0.2s;
+    }
+    .nav-step.active .nav-dot {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--white);
+    }
+    .nav-step.done .nav-dot {
+      background: var(--green-light);
+      border-color: var(--green-light);
+      color: var(--white);
+    }
+    .nav-label { font-size: 13px; font-weight: 400; }
+    .nav-step.active .nav-label { font-weight: 700; color: var(--cream); }
+    .nav-step.done .nav-label { color: var(--green-dark); font-weight: 600; }
+    .nav-score-badge {
+      margin-left: auto;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 20px;
+      background: var(--cream-warm);
+      color: var(--green-dark);
+    }
+    .nav-step.active .nav-score-badge { background: rgba(255,255,255,0.2); color: var(--cream); }
+
+    /* ─── MAIN CONTENT ────────────────────────────────────────────── */
+    .main-content { flex: 1; min-width: 0; }
+
+    /* ─── CARDS ───────────────────────────────────────────────────── */
+    .card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--cream-border);
+      overflow: hidden;
+      display: none;
+    }
+    .card.active { display: block; }
+
+    .card-header {
+      background: linear-gradient(135deg, var(--green-dark), var(--green-mid));
+      padding: 20px 28px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .dept-icon {
+      font-size: 28px;
+      width: 50px; height: 50px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .card-header-text h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: var(--cream);
+      font-weight: 600;
+    }
+    .card-header-text p {
+      color: var(--green-pale);
+      font-size: 13px;
+      margin-top: 3px;
+    }
+    .card-dept-avg {
+      margin-left: auto;
+      text-align: center;
+      color: var(--cream);
+    }
+    .card-dept-avg .avg-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--gold-light);
+      line-height: 1;
+    }
+    .card-dept-avg .avg-label { font-size: 11px; color: var(--green-pale); letter-spacing: 0.06em; }
+
+    /* ─── CRITERIA ────────────────────────────────────────────────── */
+    .criteria-grid {
+      padding: 24px 28px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .criterion-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 14px 16px;
+      background: var(--cream);
+      border-radius: var(--radius);
+      border: 1.5px solid transparent;
+      transition: border-color 0.2s;
+    }
+    .criterion-row.scored { border-color: var(--green-pale); background: #f6faf5; }
+
+    .criterion-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-bottom: 2px;
+    }
+    .criterion-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 300;
+    }
+
+    .score-buttons {
+      display: flex;
+      gap: 5px;
+    }
+    .score-btn {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      border: 2px solid var(--cream-border);
+      background: var(--white);
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .score-btn:hover { border-color: var(--green-mid); color: var(--green-mid); transform: translateY(-1px); }
+    .score-btn.selected-1 { background: var(--score-1); border-color: var(--score-1); color: #fff; }
+    .score-btn.selected-2 { background: var(--score-2); border-color: var(--score-2); color: #fff; }
+    .score-btn.selected-3 { background: var(--score-3); border-color: var(--score-3); color: #333; }
+    .score-btn.selected-4 { background: var(--score-4); border-color: var(--score-4); color: #fff; }
+    .score-btn.selected-5 { background: var(--score-5); border-color: var(--score-5); color: #fff; }
+
+    /* ─── SCORE LEGEND ────────────────────────────────────────────── */
+    .score-legend {
+      display: flex;
+      gap: 10px;
+      padding: 0 28px 10px;
+      flex-wrap: wrap;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .legend-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+    }
+
+    /* ─── NOTES ───────────────────────────────────────────────────── */
+    .notes-section {
+      padding: 0 28px 24px;
+    }
+    .notes-section label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    .notes-section textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid var(--cream-border);
+      border-radius: var(--radius);
+      font-family: 'Lato', sans-serif;
+      font-size: 14px;
+      color: var(--text-dark);
+      background: var(--cream);
+      resize: vertical;
+      min-height: 80px;
+      transition: border-color 0.2s;
+    }
+    .notes-section textarea:focus {
+      outline: none;
+      border-color: var(--green-light);
+      background: var(--white);
+    }
+
+    /* ─── CARD FOOTER NAV ─────────────────────────────────────────── */
+    .card-footer {
+      padding: 16px 28px;
+      background: var(--cream);
+      border-top: 1px solid var(--cream-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .completion-info {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .completion-info strong { color: var(--green-dark); }
+    .footer-btns { display: flex; gap: 10px; }
+
+    /* ─── EVALUATOR CARD ──────────────────────────────────────────── */
+    .evaluator-card .card-header {
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+    }
+    .evaluator-fields {
+      padding: 28px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+    .field-group { display: flex; flex-direction: column; gap: 6px; }
+    .field-group.full-width { grid-column: 1 / -1; }
+    .field-group label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .field-group input, .field-group select {
+      padding: 11px 14px;
+      border: 1.5px solid var(--cream-border);
+      border-radius: var(--radius);
+      font-family: 'Lato', sans-serif;
+      font-size: 14px;
+      color: var(--text-dark);
+      background: var(--cream);
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .field-group input:focus, .field-group select:focus {
+      outline: none;
+      border-color: var(--green-light);
+      background: var(--white);
+    }
+
+    /* ─── REVIEW CARD ─────────────────────────────────────────────── */
+    .review-card .card-header {
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+    }
+    .review-grid {
+      padding: 24px 28px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .review-dept-card {
+      padding: 14px 16px;
+      background: var(--cream);
+      border-radius: var(--radius);
+      border: 1.5px solid var(--cream-border);
+    }
+    .review-dept-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--green-dark);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+    .review-dept-score {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .review-dept-bar {
+      height: 4px;
+      background: var(--cream-border);
+      border-radius: 2px;
+      margin-top: 8px;
+      overflow: hidden;
+    }
+    .review-dept-bar-fill { height: 100%; border-radius: 2px; transition: width 0.6s ease; }
+    .review-dept-criteria {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .overall-score-card {
+      margin: 0 28px 24px;
+      padding: 24px;
+      background: linear-gradient(135deg, var(--green-dark), var(--green-mid));
+      border-radius: var(--radius-lg);
+      color: var(--cream);
+      text-align: center;
+    }
+    .overall-score-card .big-score {
+      font-family: 'Playfair Display', serif;
+      font-size: 4rem;
+      font-weight: 700;
+      color: var(--gold-light);
+      line-height: 1;
+    }
+    .overall-score-card .score-label {
+      color: var(--green-pale);
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 6px;
+    }
+    .overall-score-card .score-stars {
+      font-size: 22px;
+      margin-top: 10px;
+    }
+
+    .api-config {
+      padding: 0 28px 20px;
+    }
+    .api-config label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .api-config input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid var(--cream-border);
+      border-radius: var(--radius);
+      font-family: 'Lato', monospace;
+      font-size: 13px;
+      color: var(--text-dark);
+      background: var(--cream);
+    }
+    .api-config input:focus { outline: none; border-color: var(--green-light); background: var(--white); }
+
+    /* ─── BUTTONS ─────────────────────────────────────────────────── */
+    .btn {
+      padding: 10px 20px;
+      border-radius: var(--radius);
+      font-family: 'Lato', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+      letter-spacing: 0.03em;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .btn-primary {
+      background: var(--green-dark);
+      color: var(--cream);
+    }
+    .btn-primary:hover { background: var(--green-mid); transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+    .btn-secondary {
+      background: var(--cream-warm);
+      color: var(--text-dark);
+      border: 1.5px solid var(--cream-border);
+    }
+    .btn-secondary:hover { background: var(--cream-border); }
+    .btn-gold {
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      color: var(--white);
+      padding: 13px 28px;
+      font-size: 15px;
+    }
+    .btn-gold:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .btn-gold:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .btn-danger {
+      background: #c0392b;
+      color: #fff;
+    }
+
+    /* ─── TOAST / STATUS ──────────────────────────────────────────── */
+    .toast-wrap {
+      position: fixed;
+      top: 20px; right: 20px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .toast {
+      padding: 14px 20px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--white);
+      max-width: 320px;
+      animation: slideIn 0.3s ease;
+    }
+    .toast.success { background: var(--green-dark); }
+    .toast.error { background: #c0392b; }
+    .toast.info { background: var(--gold); color: var(--text-dark); }
+    @keyframes slideIn {
+      from { transform: translateX(120%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes slideOut {
+      from { transform: translateX(0); opacity: 1; }
+      to { transform: translateX(120%); opacity: 0; }
+    }
+    .toast.removing { animation: slideOut 0.3s ease forwards; }
+
+    /* ─── SUBMIT SUCCESS ──────────────────────────────────────────── */
+    .success-screen {
+      display: none;
+      text-align: center;
+      padding: 60px 40px;
+    }
+    .success-screen.active { display: block; }
+    .success-icon {
+      font-size: 64px;
+      margin-bottom: 20px;
+    }
+    .success-screen h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: var(--green-dark);
+      margin-bottom: 10px;
+    }
+    .success-screen p { color: var(--text-muted); font-size: 15px; margin-bottom: 24px; }
+    .success-ref {
+      font-family: monospace;
+      background: var(--cream-warm);
+      padding: 8px 16px;
+      border-radius: var(--radius);
+      font-size: 13px;
+      color: var(--green-dark);
+      display: inline-block;
+      margin-bottom: 28px;
+    }
+
+    /* ─── RESPONSIVE ──────────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .app-layout { flex-direction: column; padding: 16px; gap: 16px; }
+      .sidebar { width: 100%; }
+      .sidebar-sticky { position: static; }
+      .nav-steps { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+      .evaluator-fields { grid-template-columns: 1fr; }
+      .review-grid { grid-template-columns: 1fr; }
+      .score-buttons .score-btn { width: 30px; height: 30px; font-size: 12px; }
+      header h1 { font-size: 1.6rem; }
+      .topbar { padding: 0 16px; font-size: 11px; }
+    }
+
+    .unsaved-dot {
+      width: 7px; height: 7px;
+      background: var(--gold);
+      border-radius: 50%;
+      display: none;
+    }
+    .nav-step.unsaved .unsaved-dot { display: block; }
+  </style>
 </head>
 <body>
-  <div class="guinness-pour" id="pour-animation"></div>
 
-  <header>
-    <div class="harp-icon">𝄞</div>
-    <h1>THE LADS' PINT TRACKER</h1>
-    <p class="tagline">Guinness is Good For You. Keeping Score Is Better.</p>
-    <div class="harp-icon">𝄞</div>
-  </header>
+<!-- TOP BAR -->
+<div class="topbar">
+  <span class="topbar-tagline">Your Other Kitchen</span>
+  <span id="topbarDate" class="topbar-date"></span>
+</div>
 
-  <div class="session-controls">
-    <div class="session-info">
-      <span id="session-time">Session Time: 00:00:00</span>
-      <span id="total-beers-counter">Total Pints Destroyed: 0</span>
-    </div>
-    <button class="btn-reset" onclick="resetSession()">☠ NEW SESSION ☠</button>
+<!-- HEADER -->
+<header>
+  <div class="header-leaf">🌿</div>
+  <h1>Summerhill <span>Market</span></h1>
+  <p class="subtitle">Store Evaluation &amp; Standards Review</p>
+  <div class="header-divider"></div>
+</header>
+
+<!-- PROGRESS -->
+<div class="progress-wrap">
+  <div class="progress-label">
+    <span id="progressText">Step 1 of 10</span>
+    <span id="progressPct">0%</span>
   </div>
+  <div class="progress-track">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+</div>
 
-  <main class="drinkers-grid">
+<!-- LAYOUT -->
+<div class="app-layout">
 
-    <!-- DAVE -->
-    <div class="drinker-card" id="card-dave">
-      <div class="drinker-avatar">🧥</div>
-      <h2 class="drinker-name">Dave</h2>
-      <div class="drinker-nickname">"Coat Rack"</div>
-      <div class="pint-display">
-        <div class="pint-glass-container">
-          <div class="pint-glass">
-            <div class="foam"></div>
-            <div class="beer-fill" id="fill-dave"></div>
-          </div>
-          <div class="pint-count" id="count-dave">0</div>
-          <div class="pint-label">PINTS</div>
-        </div>
-      </div>
-
-      <div class="drunkenness-meter">
-        <div class="meter-label">DRUNKOMETER</div>
-        <div class="meter-bar">
-          <div class="meter-fill" id="meter-dave"></div>
-        </div>
-        <div class="drunk-status" id="status-dave">Stone Cold Sober 😒</div>
-      </div>
-
-      <div class="stats">
-        <div class="stat">
-          <div class="stat-value" id="spend-dave">$0</div>
-          <div class="stat-label">Spent on Happiness</div>
-        </div>
-      </div>
-
-      <div class="btn-group">
-        <button class="btn-add" onclick="addBeer('dave')">
-          🍺 ANOTHER PINT
-        </button>
-        <button class="btn-remove" onclick="removeBeer('dave')">
-          😢 SPILLED ONE
-        </button>
-      </div>
-
-      <div class="award-badge" id="award-dave"></div>
-    </div>
-
-    <!-- SCOREBOARD CENTER -->
-    <div class="scoreboard">
-      <div class="guinness-logo">
-        <div class="logo-harp">𝄞</div>
-        <div class="logo-text">GUINNESS</div>
-        <div class="logo-sub">EST. 1759</div>
-      </div>
-      <div class="vs-display">VS</div>
-      <div class="scoreboard-stats">
-        <div class="score-row">
-          <span id="sb-dave-count">0</span>
-          <span class="score-label">PINTS</span>
-          <span id="sb-mullen-count">0</span>
-        </div>
-        <div class="score-row">
-          <span id="sb-dave-spend">$0</span>
-          <span class="score-label">CASH</span>
-          <span id="sb-mullen-spend">$0</span>
-        </div>
-      </div>
-
-      <div class="gp-award-section" id="gp-section">
-        <div class="gp-trophy">🏆</div>
-        <div class="gp-title">GP AWARD</div>
-        <div class="gp-subtitle">Giant Pussy</div>
-        <div class="gp-winner" id="gp-winner">Start drinking to find out...</div>
-      </div>
-
-      <div class="fun-fact" id="fun-fact">
-        "A pint of Guinness has fewer calories than a pint of orange juice. You're basically on a diet."
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-sticky">
+      <div class="sidebar-title">Evaluation Steps</div>
+      <div class="nav-steps" id="navSteps">
+        <!-- injected by JS -->
       </div>
     </div>
+  </aside>
 
-    <!-- MULLEN -->
-    <div class="drinker-card" id="card-mullen">
-      <div class="drinker-avatar">🤌</div>
-      <h2 class="drinker-name">Mullen</h2>
-      <div class="drinker-nickname">"The Lad"</div>
-      <div class="pint-display">
-        <div class="pint-glass-container">
-          <div class="pint-glass">
-            <div class="foam"></div>
-            <div class="beer-fill" id="fill-mullen"></div>
-          </div>
-          <div class="pint-count" id="count-mullen">0</div>
-          <div class="pint-label">PINTS</div>
-        </div>
-      </div>
-
-      <div class="drunkenness-meter">
-        <div class="meter-label">DRUNKOMETER</div>
-        <div class="meter-bar">
-          <div class="meter-fill" id="meter-mullen"></div>
-        </div>
-        <div class="drunk-status" id="status-mullen">Stone Cold Sober 😒</div>
-      </div>
-
-      <div class="stats">
-        <div class="stat">
-          <div class="stat-value" id="spend-mullen">$0</div>
-          <div class="stat-label">Spent on Happiness</div>
-        </div>
-      </div>
-
-      <div class="btn-group">
-        <button class="btn-add" onclick="addBeer('mullen')">
-          🍺 ANOTHER PINT
-        </button>
-        <button class="btn-remove" onclick="removeBeer('mullen')">
-          😢 SPILLED ONE
-        </button>
-      </div>
-
-      <div class="award-badge" id="award-mullen"></div>
-    </div>
-
+  <!-- MAIN -->
+  <main class="main-content" id="mainContent">
+    <!-- injected by JS -->
   </main>
+</div>
 
-  <div class="announcement-bar" id="announcement"></div>
+<!-- TOASTS -->
+<div class="toast-wrap" id="toastWrap"></div>
 
-  <footer>
-    <p>Guinness &amp; Mates © 1759 | Drink Responsibly (But Not Too Responsibly — We're Watching)</p>
-    <p class="footer-disclaimer">Any resemblance to actual drinking sessions is entirely intentional.</p>
-  </footer>
+<script>
+// ─── DATA MODEL ─────────────────────────────────────────────────────────────
 
-  <script>const BEER_PRICE = 12;
+const CRITERIA = [
+  { id: 'cleanliness',    label: 'Cleanliness & Sanitation',       desc: 'Floors, surfaces, equipment, display cases' },
+  { id: 'freshness',      label: 'Product Freshness & Quality',     desc: 'Date rotation, visual quality, condition' },
+  { id: 'presentation',   label: 'Display Presentation',            desc: 'Merchandising, facing, visual appeal' },
+  { id: 'stock',          label: 'Stock Availability',              desc: 'No gaps/voids, shelves adequately filled' },
+  { id: 'variety',        label: 'Product Variety & Range',         desc: 'Breadth of selection, SKU coverage' },
+  { id: 'signage',        label: 'Signage & Labeling',              desc: 'Price signs, product info, promotional tags' },
+  { id: 'pricing',        label: 'Pricing Accuracy',                desc: 'Shelf price matches register, clear markings' },
+  { id: 'temperature',    label: 'Temperature & Storage Compliance',desc: 'Cold chain integrity, proper storage conditions' },
+  { id: 'safety',         label: 'Health & Safety Standards',       desc: 'Hazard-free aisles, food handling, compliance' },
+  { id: 'staff_appear',   label: 'Staff Appearance',                desc: 'Uniform, grooming, professional presentation' },
+  { id: 'staff_know',     label: 'Staff Product Knowledge',         desc: 'Ability to assist and advise customers' },
+  { id: 'customer_svc',   label: 'Customer Service Quality',        desc: 'Responsiveness, friendliness, proactivity' },
+  { id: 'organization',   label: 'Organization & Order',            desc: 'Logical layout, tidiness, backstock management' },
+  { id: 'local_seasonal', label: 'Local & Seasonal Selection',      desc: 'Sourcing relationships, seasonal relevance' },
+  { id: 'atmosphere',     label: 'Atmosphere & Sensory Experience', desc: 'Aroma, ambiance, overall department feel' },
+  { id: 'waste',          label: 'Waste Management',                desc: 'Shrink control, markdown process, sustainability' },
+  { id: 'innovation',     label: 'Innovation & Differentiation',    desc: 'Unique offerings, creative merchandising' },
+  { id: 'brand_standard', label: 'Brand Standards Alignment',       desc: 'Adherence to Summerhill identity and values' },
+];
 
+const DEPARTMENTS = [
+  { id: 'produce',        label: 'Produce',         icon: '🥦', desc: 'Fruits, vegetables, herbs & salad bar' },
+  { id: 'meat',           label: 'Meat',             icon: '🥩', desc: 'Butcher counter, packaged meats & poultry' },
+  { id: 'deli',           label: 'Deli',             icon: '🧀', desc: 'Charcuterie, cheese, prepared deli items' },
+  { id: 'bakery',         label: 'Bakery',           icon: '🍞', desc: 'Breads, pastries, custom cakes & patisserie' },
+  { id: 'prepared_foods', label: 'Prepared Foods',  icon: '🍱', desc: 'Hot bar, grab-and-go meals, catering items' },
+  { id: 'floral',         label: 'Floral',           icon: '🌸', desc: 'Fresh flowers, plants & floral arrangements' },
+  { id: 'grocery',        label: 'Grocery',          icon: '🛒', desc: 'Dry goods, pantry, specialty & international' },
+  { id: 'general',        label: 'General',          icon: '🏪', desc: 'Store-wide standards, entrance & common areas' },
+];
+
+const SCORE_LABELS = { 1: 'Unacceptable', 2: 'Below Standard', 3: 'Meets Standard', 4: 'Above Standard', 5: 'Exceptional' };
+const SCORE_COLORS = { 1: '#c0392b', 2: '#e67e22', 3: '#d4a500', 4: '#27ae60', 5: '#1e4620' };
+
+// App state
 const state = {
-  dave: 0,
-  mullen: 0,
-  sessionStart: Date.now(),
+  step: 0, // 0 = evaluator info, 1-8 = departments, 9 = review & submit
+  evaluator: { name: '', date: '', store: '', visitTime: '', role: '' },
+  scores: {},  // { deptId: { criterionId: score } }
+  notes: {},   // { deptId: string }
+  apiEndpoint: '/api/evaluations',
+  submitting: false,
+  submitted: false,
 };
 
-const drunkLevels = [
-  { min: 0,  max: 0,  status: "Stone Cold Sober 😒",          meterPct: 0   },
-  { min: 1,  max: 1,  status: "Just Warming Up 🥱",            meterPct: 8   },
-  { min: 2,  max: 2,  status: "Feeling It a Bit 🙂",           meterPct: 16  },
-  { min: 3,  max: 3,  status: "Getting Chatty 😏",             meterPct: 25  },
-  { min: 4,  max: 4,  status: "Proper Craic 😄",               meterPct: 35  },
-  { min: 5,  max: 5,  status: "Telling Great Stories 🗣",       meterPct: 45  },
-  { min: 6,  max: 6,  status: "Loves Everyone 🥰",             meterPct: 55  },
-  { min: 7,  max: 7,  status: "Where Are We Again? 😵",        meterPct: 65  },
-  { min: 8,  max: 8,  status: "Speaking in Tongues 🤪",        meterPct: 75  },
-  { min: 9,  max: 9,  status: "Calling Your Ex 😬",            meterPct: 82  },
-  { min: 10, max: 11, status: "Legendary Status 🔥",           meterPct: 90  },
-  { min: 12, max: 14, status: "Pure Mangled 💀",               meterPct: 96  },
-  { min: 15, max: 999,status: "Clinically Dissolved ☠",        meterPct: 100 },
-];
+DEPARTMENTS.forEach(d => { state.scores[d.id] = {}; state.notes[d.id] = ''; });
 
-const funFacts = [
-  '"A pint of Guinness has fewer calories than a pint of orange juice. You\'re basically on a diet."',
-  '"Guinness is brewed with nitrogen, not CO2 — that\'s why it\'s smoother than your chat-up lines."',
-  '"It takes exactly 119.5 seconds to pour the perfect pint. Dave takes 119.5 seconds to decide he wants one."',
-  '"Arthur Guinness signed a 9,000-year lease on his brewery. Absolute commitment. Take notes, lads."',
-  '"The perfect Guinness is served at 6°C (42.8°F). Cold as Mullen\'s heart after a bad session."',
-  '"Guinness accounts for 2.5% of all beer sold worldwide. The lads account for 2.5% of that."',
-  '"There are 10.8 million pints of Guinness consumed every day. You lads are doing your bit."',
-  '"Guinness was once prescribed by doctors to post-operative patients. Healthcare was class back then."',
-];
+// ─── UTILITIES ───────────────────────────────────────────────────────────────
 
-const announcements = {
-  0:  "The session has begun. May the pints flow and the dignity slowly evaporate. 🍺",
-  1:  "First pint down. A journey of a thousand miles begins with a single Guinness.",
-  2:  "Two pints in. Officially off the clock. Arthur Guinness would be proud.",
-  3:  "Three pints. You're not drunk, you're just aggressively relaxed.",
-  4:  "Four pints! The craic is approaching. Hide your phone.",
-  5:  "FIVE PINTS. Half a ten-pack. The night is young and so are your terrible decisions.",
-  6:  "Six pints in! At this point you're basically Guinness-powered. 🔥",
-  7:  "SEVEN! Dave's coat rack is now a hat stand. Mullen has opinions about everything.",
-  8:  "Eight pints. You're not slurring, you're speaking in a richer dialect.",
-  9:  "NINE PINTS. Medical science would like a word with both of you.",
-  10: "TEN PINTS. LEGENDARY. Arthur Guinness has appeared in your peripheral vision.",
-};
-
-const gpTaunts = [
-  "is the reigning GP champion 🏆 (Giant Pussy Award)",
-  "is nursing that pint like it owes them money 🐱",
-  "is taking it easy... AKA being a complete softie 😂",
-  "is clearly saving room for dessert 🍰",
-  "has been sipping like it's a fine wine. Mate, it's a Guinness. 😤",
-  "is giving 'I've got work tomorrow' energy 📋",
-];
-
-let factIndex = Math.floor(Math.random() * funFacts.length);
-let sessionTimerInterval = null;
-
-function init() {
-  loadState();
-  render();
-  startSessionTimer();
-  rotateFunFacts();
+function deptAvg(deptId) {
+  const scores = Object.values(state.scores[deptId]);
+  if (!scores.length) return null;
+  return (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(1);
 }
 
-function loadState() {
-  const saved = localStorage.getItem('beerTrackerState');
-  if (saved) {
-    const parsed = JSON.parse(saved);
-    state.dave = parsed.dave || 0;
-    state.mullen = parsed.mullen || 0;
-    state.sessionStart = parsed.sessionStart || Date.now();
-  }
+function overallAvg() {
+  const avgs = DEPARTMENTS.map(d => deptAvg(d.id)).filter(Boolean).map(Number);
+  if (!avgs.length) return null;
+  return (avgs.reduce((a, b) => a + b, 0) / avgs.length).toFixed(2);
 }
 
-function saveState() {
-  localStorage.setItem('beerTrackerState', JSON.stringify(state));
+function deptComplete(deptId) {
+  return Object.keys(state.scores[deptId]).length === CRITERIA.length;
 }
 
-function addBeer(person) {
-  state[person]++;
-  saveState();
-  render();
-  triggerBurst();
-  showAnnouncement(person);
-  flashCard(person);
+function scoredCount(deptId) {
+  return Object.keys(state.scores[deptId]).length;
 }
 
-function removeBeer(person) {
-  if (state[person] > 0) {
-    state[person]--;
-    saveState();
-    render();
-  }
+function totalSteps() { return 10; }
+
+function progressPct() {
+  const evalFilled = Object.values(state.evaluator).filter(Boolean).length;
+  const evalScore = evalFilled >= 3 ? 1 : 0;
+  const deptScores = DEPARTMENTS.map(d => scoredCount(d.id) / CRITERIA.length);
+  const total = evalScore + deptScores.reduce((a, b) => a + b, 0);
+  return Math.round((total / 9) * 100);
 }
 
-function render() {
-  const dave = state.dave;
-  const mullen = state.mullen;
-  const total = dave + mullen;
-
-  // Counts
-  document.getElementById('count-dave').textContent = dave;
-  document.getElementById('count-mullen').textContent = mullen;
-  document.getElementById('total-beers-counter').textContent = `Total Pints Destroyed: ${total}`;
-
-  // Scoreboard
-  document.getElementById('sb-dave-count').textContent = dave;
-  document.getElementById('sb-mullen-count').textContent = mullen;
-  document.getElementById('sb-dave-spend').textContent = `$${dave * BEER_PRICE}`;
-  document.getElementById('sb-mullen-spend').textContent = `$${mullen * BEER_PRICE}`;
-
-  // Spend
-  document.getElementById('spend-dave').textContent = `$${dave * BEER_PRICE}`;
-  document.getElementById('spend-mullen').textContent = `$${mullen * BEER_PRICE}`;
-
-  // Drunk status & meter
-  updateDrunkStatus('dave', dave);
-  updateDrunkStatus('mullen', mullen);
-
-  // Glass fill
-  updateGlass('dave', dave);
-  updateGlass('mullen', mullen);
-
-  // GP Award
-  updateGPAward(dave, mullen);
-
-  // Card glow
-  updateCardGlow(dave, mullen);
+function scoreColor(avg) {
+  const n = parseFloat(avg);
+  if (n >= 4.5) return SCORE_COLORS[5];
+  if (n >= 3.5) return SCORE_COLORS[4];
+  if (n >= 2.5) return SCORE_COLORS[3];
+  if (n >= 1.5) return SCORE_COLORS[2];
+  return SCORE_COLORS[1];
 }
 
-function getDrunkLevel(count) {
-  return drunkLevels.find(l => count >= l.min && count <= l.max) || drunkLevels[drunkLevels.length - 1];
+function scoreStars(avg) {
+  const n = parseFloat(avg);
+  const full = Math.floor(n);
+  const half = n - full >= 0.5 ? 1 : 0;
+  const empty = 5 - full - half;
+  return '★'.repeat(full) + (half ? '☆' : '') + '✩'.repeat(empty);
 }
 
-function updateDrunkStatus(person, count) {
-  const level = getDrunkLevel(count);
-  const meter = document.getElementById(`meter-${person}`);
-  const status = document.getElementById(`status-${person}`);
-  meter.style.width = level.meterPct + '%';
-  status.textContent = level.status;
+function uniqueId() {
+  return 'SHM-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).slice(2, 5).toUpperCase();
 }
 
-function updateGlass(person, count) {
-  const fill = document.getElementById(`fill-${person}`);
-  const foam = fill.parentElement.querySelector('.foam');
-  const pct = Math.min(count * 7, 85);
-  fill.style.height = pct + '%';
-  foam.style.opacity = count > 0 ? '1' : '0';
-}
+// ─── TOAST ──────────────────────────────────────────────────────────────────
 
-function updateGPAward(dave, mullen) {
-  const gpSection = document.getElementById('gp-section');
-  const gpWinner = document.getElementById('gp-winner');
-  const daveBadge = document.getElementById('award-dave');
-  const mullenBadge = document.getElementById('award-mullen');
-
-  daveBadge.textContent = '';
-  mullenBadge.textContent = '';
-  daveBadge.className = 'award-badge';
-  mullenBadge.className = 'award-badge';
-
-  if (dave === 0 && mullen === 0) {
-    gpWinner.textContent = "Start drinking to find out...";
-    return;
-  }
-
-  if (dave === mullen) {
-    gpWinner.textContent = "Tied! You're both equally pathetic. 🤝";
-    return;
-  }
-
-  const taunt = gpTaunts[Math.floor(Math.random() * gpTaunts.length)];
-
-  if (dave < mullen) {
-    gpWinner.textContent = `Dave "Coat Rack" ${taunt}`;
-    daveBadge.textContent = 'GP 🐱';
-    daveBadge.className = 'award-badge gp';
-    mullenBadge.textContent = '🏆 CHAMP';
-    mullenBadge.className = 'award-badge champ';
-  } else {
-    gpWinner.textContent = `Mullen ${taunt}`;
-    mullenBadge.textContent = 'GP 🐱';
-    mullenBadge.className = 'award-badge gp';
-    daveBadge.textContent = '🏆 CHAMP';
-    daveBadge.className = 'award-badge champ';
-  }
-}
-
-function updateCardGlow(dave, mullen) {
-  const daveCard = document.getElementById('card-dave');
-  const mullenCard = document.getElementById('card-mullen');
-
-  daveCard.className = 'drinker-card';
-  mullenCard.className = 'drinker-card';
-
-  if (dave === 0 && mullen === 0) return;
-  if (dave === mullen) return;
-
-  if (dave > mullen) {
-    daveCard.className = 'drinker-card winning';
-    mullenCard.className = 'drinker-card losing';
-  } else {
-    mullenCard.className = 'drinker-card winning';
-    daveCard.className = 'drinker-card losing';
-  }
-}
-
-function showAnnouncement(person) {
-  const total = state.dave + state.mullen;
-  const personCount = state[person];
-  const name = person === 'dave' ? 'Dave "Coat Rack"' : 'Mullen';
-  const bar = document.getElementById('announcement');
-
-  let msg = announcements[personCount]
-    ? `${name} — ${announcements[personCount]}`
-    : `${name} just sank pint #${personCount}. The legend grows. 🍺`;
-
-  bar.textContent = msg;
-  bar.style.opacity = '1';
-}
-
-function flashCard(person) {
-  const card = document.getElementById(`card-${person}`);
-  card.style.transition = 'box-shadow 0.1s';
-  card.style.boxShadow = '0 0 30px rgba(200, 146, 42, 0.8)';
+function showToast(msg, type = 'success', duration = 3500) {
+  const wrap = document.getElementById('toastWrap');
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.textContent = msg;
+  wrap.appendChild(el);
   setTimeout(() => {
-    card.style.boxShadow = '';
-    card.style.transition = '';
-  }, 400);
+    el.classList.add('removing');
+    setTimeout(() => el.remove(), 300);
+  }, duration);
 }
 
-function triggerBurst() {
-  const burst = document.createElement('div');
-  burst.className = 'burst';
-  burst.textContent = ['🍺', '🍻', '🏆', '💥'][Math.floor(Math.random() * 4)];
-  burst.style.left = (20 + Math.random() * 60) + 'vw';
-  burst.style.top = (20 + Math.random() * 60) + 'vh';
-  document.body.appendChild(burst);
-  setTimeout(() => burst.remove(), 900);
+// ─── RENDER ──────────────────────────────────────────────────────────────────
+
+function renderNav() {
+  const container = document.getElementById('navSteps');
+  const steps = [
+    { label: 'Evaluator Info', icon: '📋' },
+    ...DEPARTMENTS.map(d => ({ label: d.label, icon: d.icon, deptId: d.id })),
+    { label: 'Review & Submit', icon: '✅' },
+  ];
+
+  container.innerHTML = steps.map((s, i) => {
+    const isActive = state.step === i;
+    const isDone = (() => {
+      if (i === 0) return Object.values(state.evaluator).filter(Boolean).length >= 3;
+      if (i <= 8) return deptComplete(DEPARTMENTS[i - 1].id);
+      return false;
+    })();
+    const avg = s.deptId ? deptAvg(s.deptId) : null;
+    return `
+      <div class="nav-step ${isActive ? 'active' : ''} ${isDone ? 'done' : ''}"
+           onclick="goToStep(${i})" title="${s.label}">
+        <div class="nav-dot">${isDone && !isActive ? '✓' : (i + 1)}</div>
+        <div class="nav-label">${s.label}</div>
+        ${avg ? `<span class="nav-score-badge">${avg}</span>` : ''}
+        <div class="unsaved-dot"></div>
+      </div>`;
+  }).join('');
 }
 
-function startSessionTimer() {
-  if (sessionTimerInterval) clearInterval(sessionTimerInterval);
-  sessionTimerInterval = setInterval(() => {
-    const elapsed = Date.now() - state.sessionStart;
-    const h = Math.floor(elapsed / 3600000).toString().padStart(2, '0');
-    const m = Math.floor((elapsed % 3600000) / 60000).toString().padStart(2, '0');
-    const s = Math.floor((elapsed % 60000) / 1000).toString().padStart(2, '0');
-    document.getElementById('session-time').textContent = `Session Time: ${h}:${m}:${s}`;
-  }, 1000);
+function renderEvaluatorCard() {
+  const today = new Date().toISOString().split('T')[0];
+  return `
+    <div class="card evaluator-card ${state.step === 0 ? 'active' : ''}" id="card-0">
+      <div class="card-header">
+        <div class="dept-icon">📋</div>
+        <div class="card-header-text">
+          <h2>Evaluator Information</h2>
+          <p>Complete your details before beginning the evaluation</p>
+        </div>
+      </div>
+      <div class="evaluator-fields">
+        <div class="field-group">
+          <label>Evaluator Name *</label>
+          <input type="text" id="eval-name" value="${state.evaluator.name}"
+                 placeholder="e.g. Jane Smith" oninput="state.evaluator.name=this.value;syncProgress()">
+        </div>
+        <div class="field-group">
+          <label>Role / Title</label>
+          <input type="text" id="eval-role" value="${state.evaluator.role}"
+                 placeholder="e.g. Store Manager" oninput="state.evaluator.role=this.value">
+        </div>
+        <div class="field-group">
+          <label>Evaluation Date *</label>
+          <input type="date" id="eval-date" value="${state.evaluator.date || today}"
+                 oninput="state.evaluator.date=this.value;syncProgress()">
+        </div>
+        <div class="field-group">
+          <label>Visit Time</label>
+          <input type="time" id="eval-time" value="${state.evaluator.visitTime}"
+                 oninput="state.evaluator.visitTime=this.value">
+        </div>
+        <div class="field-group full-width">
+          <label>Store Location *</label>
+          <select id="eval-store" onchange="state.evaluator.store=this.value;syncProgress()">
+            <option value="">— Select Store —</option>
+            <option value="Summerhill - Toronto (Yonge St)" ${state.evaluator.store === 'Summerhill - Toronto (Yonge St)' ? 'selected' : ''}>Summerhill Market — Toronto (Yonge St)</option>
+            <option value="Summerhill - Oakville" ${state.evaluator.store === 'Summerhill - Oakville' ? 'selected' : ''}>Summerhill Market — Oakville</option>
+            <option value="Summerhill - Other" ${state.evaluator.store === 'Summerhill - Other' ? 'selected' : ''}>Summerhill Market — Other Location</option>
+          </select>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span class="completion-info">Fields marked * are required</span>
+        <div class="footer-btns">
+          <button class="btn btn-primary" onclick="goToStep(1)">
+            Begin Evaluation →
+          </button>
+        </div>
+      </div>
+    </div>`;
 }
 
-function rotateFunFacts() {
-  setInterval(() => {
-    factIndex = (factIndex + 1) % funFacts.length;
-    document.getElementById('fun-fact').textContent = funFacts[factIndex];
-  }, 12000);
-  document.getElementById('fun-fact').textContent = funFacts[factIndex];
+function renderDeptCard(dept, stepIndex) {
+  const scored = scoredCount(dept.id);
+  const avg = deptAvg(dept.id);
+  const isActive = state.step === stepIndex;
+  return `
+    <div class="card ${isActive ? 'active' : ''}" id="card-${stepIndex}">
+      <div class="card-header">
+        <div class="dept-icon">${dept.icon}</div>
+        <div class="card-header-text">
+          <h2>${dept.label}</h2>
+          <p>${dept.desc}</p>
+        </div>
+        <div class="card-dept-avg">
+          <div class="avg-num" id="avg-${dept.id}">${avg || '—'}</div>
+          <div class="avg-label">Avg Score</div>
+        </div>
+      </div>
+
+      <div class="score-legend">
+        ${Object.entries(SCORE_LABELS).map(([n, lbl]) =>
+          `<div class="legend-item">
+            <div class="legend-dot" style="background:${SCORE_COLORS[n]}"></div>
+            <span>${n} — ${lbl}</span>
+          </div>`).join('')}
+      </div>
+
+      <div class="criteria-grid">
+        ${CRITERIA.map((c, ci) => {
+          const sel = state.scores[dept.id][c.id];
+          return `
+            <div class="criterion-row ${sel ? 'scored' : ''}" id="row-${dept.id}-${c.id}">
+              <div>
+                <div class="criterion-label">${ci + 1}. ${c.label}</div>
+                <div class="criterion-desc">${c.desc}</div>
+              </div>
+              <div class="score-buttons">
+                ${[1,2,3,4,5].map(n => `
+                  <button class="score-btn ${sel === n ? 'selected-'+n : ''}"
+                          onclick="setScore('${dept.id}','${c.id}',${n})"
+                          title="${SCORE_LABELS[n]}">${n}</button>`).join('')}
+              </div>
+            </div>`;
+        }).join('')}
+      </div>
+
+      <div class="notes-section">
+        <label>Department Notes &amp; Observations</label>
+        <textarea id="notes-${dept.id}"
+                  placeholder="Add any observations, highlights, or concerns for this department..."
+                  oninput="state.notes['${dept.id}']=this.value">${state.notes[dept.id]}</textarea>
+      </div>
+
+      <div class="card-footer">
+        <span class="completion-info">
+          <strong>${scored}</strong> / ${CRITERIA.length} criteria scored
+          ${avg ? `· Avg: <strong style="color:${scoreColor(avg)}">${avg}</strong>` : ''}
+        </span>
+        <div class="footer-btns">
+          <button class="btn btn-secondary" onclick="goToStep(${stepIndex - 1})">← Back</button>
+          <button class="btn btn-primary" onclick="goToStep(${stepIndex + 1})">
+            ${stepIndex < 8 ? DEPARTMENTS[stepIndex].label + ' →' : 'Review & Submit →'}
+          </button>
+        </div>
+      </div>
+    </div>`;
 }
 
-function resetSession() {
-  if (!confirm('Reset the whole session? This will zero out all pints. Are you sure, you absolute animal?')) return;
-  state.dave = 0;
-  state.mullen = 0;
-  state.sessionStart = Date.now();
-  saveState();
-  render();
-  document.getElementById('announcement').textContent = 'New session started. May God have mercy on your livers.';
+function renderReviewCard() {
+  const overall = overallAvg();
+  const isActive = state.step === 9;
+  return `
+    <div class="card review-card ${isActive ? 'active' : ''}" id="card-9">
+      <div class="card-header">
+        <div class="dept-icon">📊</div>
+        <div class="card-header-text">
+          <h2>Review &amp; Submit</h2>
+          <p>Confirm your evaluation before submitting to the database</p>
+        </div>
+      </div>
+
+      <div class="overall-score-card">
+        <div class="big-score" id="overall-big">${overall || '—'}</div>
+        <div class="score-label">Overall Store Score / 5.00</div>
+        <div class="score-stars" id="overall-stars">${overall ? scoreStars(overall) : ''}</div>
+      </div>
+
+      <div class="review-grid" id="reviewGrid">
+        ${DEPARTMENTS.map(d => {
+          const avg = deptAvg(d.id);
+          const pct = avg ? ((parseFloat(avg) / 5) * 100).toFixed(0) : 0;
+          const color = avg ? scoreColor(avg) : '#ccc';
+          return `
+            <div class="review-dept-card">
+              <div class="review-dept-name">${d.icon} ${d.label}</div>
+              <div class="review-dept-score" style="color:${color}">${avg || 'N/A'}</div>
+              <div class="review-dept-bar">
+                <div class="review-dept-bar-fill" style="width:${pct}%;background:${color}"></div>
+              </div>
+              <div class="review-dept-criteria">${scoredCount(d.id)}/${CRITERIA.length} criteria · ${avg ? SCORE_LABELS[Math.round(parseFloat(avg))] : 'Not scored'}</div>
+            </div>`;
+        }).join('')}
+      </div>
+
+      <div class="api-config">
+        <label>API Endpoint (POST destination)</label>
+        <input type="url" id="apiEndpointInput" value="${state.apiEndpoint}"
+               oninput="state.apiEndpoint=this.value"
+               placeholder="https://your-api.com/evaluations">
+      </div>
+
+      <div class="card-footer" style="justify-content:space-between;flex-wrap:wrap;gap:12px;">
+        <div>
+          <div style="font-size:13px;color:var(--text-muted);">
+            Evaluator: <strong>${state.evaluator.name || '—'}</strong> ·
+            Store: <strong>${state.evaluator.store || '—'}</strong> ·
+            Date: <strong>${state.evaluator.date || '—'}</strong>
+          </div>
+        </div>
+        <div class="footer-btns">
+          <button class="btn btn-secondary" onclick="goToStep(8)">← Back</button>
+          <button class="btn btn-gold" id="submitBtn" onclick="submitEvaluation()">
+            Submit Evaluation ✓
+          </button>
+        </div>
+      </div>
+
+      <div class="success-screen" id="successScreen">
+        <div class="success-icon">🌿</div>
+        <h2>Evaluation Submitted!</h2>
+        <p>Thank you. Your store evaluation has been recorded successfully.</p>
+        <div class="success-ref" id="successRef"></div>
+        <button class="btn btn-primary" onclick="startNew()">Start New Evaluation</button>
+      </div>
+    </div>`;
 }
 
-// Kick everything off
-init();
+function renderAll() {
+  const main = document.getElementById('mainContent');
+  main.innerHTML =
+    renderEvaluatorCard() +
+    DEPARTMENTS.map((d, i) => renderDeptCard(d, i + 1)).join('') +
+    renderReviewCard();
+  renderNav();
+  syncProgress();
+
+  // Set today's date default
+  if (!state.evaluator.date) {
+    const dateEl = document.getElementById('eval-date');
+    if (dateEl) {
+      state.evaluator.date = dateEl.value;
+    }
+  }
+}
+
+// ─── STATE UPDATES ───────────────────────────────────────────────────────────
+
+function setScore(deptId, criterionId, score) {
+  state.scores[deptId][criterionId] = score;
+
+  // Update the row styling
+  const row = document.getElementById(`row-${deptId}-${criterionId}`);
+  if (row) {
+    row.classList.add('scored');
+    row.querySelectorAll('.score-btn').forEach((btn, i) => {
+      btn.className = 'score-btn';
+      if (i + 1 === score) btn.classList.add('selected-' + score);
+    });
+  }
+
+  // Update dept avg display
+  const avg = deptAvg(deptId);
+  const avgEl = document.getElementById(`avg-${deptId}`);
+  if (avgEl) avgEl.textContent = avg || '—';
+
+  // Update footer
+  const stepIndex = DEPARTMENTS.findIndex(d => d.id === deptId) + 1;
+  const card = document.getElementById(`card-${stepIndex}`);
+  if (card) {
+    const info = card.querySelector('.completion-info');
+    if (info) {
+      const sc = scoredCount(deptId);
+      info.innerHTML = `<strong>${sc}</strong> / ${CRITERIA.length} criteria scored` +
+        (avg ? ` · Avg: <strong style="color:${scoreColor(avg)}">${avg}</strong>` : '');
+    }
+  }
+
+  syncProgress();
+  renderNav();
+}
+
+function syncProgress() {
+  const pct = progressPct();
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressPct').textContent = pct + '%';
+  document.getElementById('progressText').textContent =
+    `Step ${state.step + 1} of ${totalSteps()}`;
+}
+
+function goToStep(i) {
+  if (i < 0 || i > 9) return;
+  // Hide current
+  const current = document.getElementById(`card-${state.step}`);
+  if (current) current.classList.remove('active');
+  state.step = i;
+  const next = document.getElementById(`card-${i}`);
+  if (next) next.classList.add('active');
+  renderNav();
+  syncProgress();
+  // Update review if going to final step
+  if (i === 9) refreshReview();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function refreshReview() {
+  const overall = overallAvg();
+  const bigEl = document.getElementById('overall-big');
+  const starsEl = document.getElementById('overall-stars');
+  if (bigEl) bigEl.textContent = overall || '—';
+  if (starsEl) starsEl.textContent = overall ? scoreStars(overall) : '';
+
+  const grid = document.getElementById('reviewGrid');
+  if (grid) {
+    grid.innerHTML = DEPARTMENTS.map(d => {
+      const avg = deptAvg(d.id);
+      const pct = avg ? ((parseFloat(avg) / 5) * 100).toFixed(0) : 0;
+      const color = avg ? scoreColor(avg) : '#ccc';
+      return `
+        <div class="review-dept-card">
+          <div class="review-dept-name">${d.icon} ${d.label}</div>
+          <div class="review-dept-score" style="color:${color}">${avg || 'N/A'}</div>
+          <div class="review-dept-bar">
+            <div class="review-dept-bar-fill" style="width:${pct}%;background:${color}"></div>
+          </div>
+          <div class="review-dept-criteria">${scoredCount(d.id)}/${CRITERIA.length} criteria · ${avg ? SCORE_LABELS[Math.round(parseFloat(avg))] : 'Not scored'}</div>
+        </div>`;
+    }).join('');
+  }
+
+  // Update evaluator summary
+  const footer = document.querySelector('.review-card .card-footer div');
+  if (footer) {
+    footer.innerHTML = `
+      <div style="font-size:13px;color:var(--text-muted);">
+        Evaluator: <strong>${state.evaluator.name || '—'}</strong> ·
+        Store: <strong>${state.evaluator.store || '—'}</strong> ·
+        Date: <strong>${state.evaluator.date || '—'}</strong>
+      </div>`;
+  }
+}
+
+// ─── SUBMIT ───────────────────────────────────────────────────────────────────
+
+async function submitEvaluation() {
+  if (state.submitting) return;
+
+  if (!state.evaluator.name || !state.evaluator.store || !state.evaluator.date) {
+    showToast('Please complete evaluator info (name, store, date) before submitting.', 'error', 4000);
+    goToStep(0);
+    return;
+  }
+
+  if (!state.apiEndpoint) {
+    showToast('Please enter an API endpoint URL.', 'error', 4000);
+    return;
+  }
+
+  state.submitting = true;
+  const btn = document.getElementById('submitBtn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Submitting…'; }
+
+  const refId = uniqueId();
+  const payload = {
+    referenceId: refId,
+    submittedAt: new Date().toISOString(),
+    evaluator: { ...state.evaluator },
+    departments: {},
+    overallScore: overallAvg() ? parseFloat(overallAvg()) : null,
+    criteria: CRITERIA.map(c => c.id),
+  };
+
+  DEPARTMENTS.forEach(d => {
+    payload.departments[d.id] = {
+      name: d.label,
+      scores: { ...state.scores[d.id] },
+      average: deptAvg(d.id) ? parseFloat(deptAvg(d.id)) : null,
+      notes: state.notes[d.id] || '',
+      criteriaScored: scoredCount(d.id),
+    };
+  });
+
+  try {
+    const res = await fetch(state.apiEndpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      const errText = await res.text().catch(() => res.statusText);
+      throw new Error(`Server responded ${res.status}: ${errText}`);
+    }
+
+    // Success
+    showToast('Evaluation submitted successfully!', 'success', 4000);
+    const btn = document.getElementById('submitBtn');
+    if (btn) btn.style.display = 'none';
+    const ss = document.getElementById('successScreen');
+    if (ss) ss.classList.add('active');
+    const refEl = document.getElementById('successRef');
+    if (refEl) refEl.textContent = 'Reference: ' + refId;
+    state.submitted = true;
+
+  } catch (err) {
+    console.error('Submission error:', err);
+    showToast('Submission failed: ' + err.message, 'error', 6000);
+    if (btn) { btn.disabled = false; btn.textContent = 'Submit Evaluation ✓'; }
+  } finally {
+    state.submitting = false;
+  }
+}
+
+function startNew() {
+  // Reset state
+  state.step = 0;
+  state.evaluator = { name: '', date: '', store: '', visitTime: '', role: '' };
+  DEPARTMENTS.forEach(d => { state.scores[d.id] = {}; state.notes[d.id] = ''; });
+  state.submitting = false;
+  state.submitted = false;
+  renderAll();
+}
+
+// ─── TOPBAR DATE ───────────────────────────────────────────────────────────
+
+function setTopbarDate() {
+  const el = document.getElementById('topbarDate');
+  if (!el) return;
+  const now = new Date();
+  el.textContent = now.toLocaleDateString('en-CA', {
+    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+  });
+}
+
+// ─── INIT ──────────────────────────────────────────────────────────────────
+
+setTopbarDate();
+renderAll();
 </script>
 </body>
 </html>
